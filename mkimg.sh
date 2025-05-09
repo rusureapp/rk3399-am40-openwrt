@@ -139,7 +139,7 @@ PACKAGES="${pkgadd} ${pkgremove}" \
 DISABLED_SERVICES="${disable_services}" \
 FILES="files" \
 ROOTFS_PARTSIZE=${rootfs_size} \
-BIN_DIR="${outdir}/"
+BIN_DIR="${outdir}"
 
 
 ## rename outputs
