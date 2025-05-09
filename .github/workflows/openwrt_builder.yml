@@ -1,5 +1,5 @@
 # build OpenWrt for rk3399-am40 via Image Builder
-name: OpenWrt Image Builder for RK3399-AM40
+name: RK3399-AM40 OpenWrt Builder 
 
 # Controls when the workflow will run
 on:
@@ -28,7 +28,7 @@ jobs:
         run: |
              mkdir ./output
              docker run \
-             -e openwrtver=${inputs.openwrt_version} \
+             -e openwrtver=${{ inputs.openwrt_version }} \
              -v ./input:/input -v ./output:/output -v ./mkimg.sh:/mkimg.sh \
-             openwrt/imagebuilder:rockchip-armv8-${inputs.openwrt_version} \
+             openwrt/imagebuilder:rockchip-armv8-${{ inputs.openwrt_version }} \
              /bin/bash /mkimg.sh
