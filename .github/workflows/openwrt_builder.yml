@@ -30,5 +30,5 @@ jobs:
              docker run \
              -e openwrtver=${{ inputs.openwrt_version }} \
              -v ./input:/input -v ./output:/output -v ./mkimg.sh:/mkimg.sh \
-             openwrt/imagebuilder:rockchip-armv8-${{ inputs.openwrt_version }} \
+             ghcr.io/openwrt/imagebuilder:rockchip-armv8-${{ inputs.openwrt_version }} \
              /bin/bash /mkimg.sh
