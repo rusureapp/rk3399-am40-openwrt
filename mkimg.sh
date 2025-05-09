@@ -38,6 +38,7 @@ if [ ! -d builder ]; then
 	wget -O - ${downloadurl} | tar --zstd -xf - 
 	mv *imagebuilder*-x86_64 builder
 fi
+
 cd builder
 
 [ ! -d tmp ] && mkdir tmp
@@ -68,6 +69,15 @@ if [ ! -e ${kerneldir}/${device}-kernel.bin ]; then
 	PATH=${kerneldir}/${kernelver}/scripts/dtc:$PATH \
 	staging_dir/host/bin/mkimage -f tmp/*.its ${kerneldir}/${device}-kernel.bin
 	echo ' '
+fi
+
+
+## copy u-boot bin
+targetuboot=staging_dir/target-aarch64_generic_musl/image/${model}-${soc}-u-boot-${platform}.bin
+if [ ! -e ${targetuboot} ]; then
+	ubootpath=$(ls $ubootdir/*u-boot*.bin | head -1)
+	[ -z ${ubootpath} ] && exit 1
+	cp ${ubootpath} ${targetuboot}
 fi
 
 
@@ -105,11 +115,6 @@ if [ ${create_ext4fs} == NO ]; then
 fi
 
 
-## copy u-boot bin
-ubootpath=$(ls $ubootdir/*u-boot*.bin | head -1); [ -z ${ubootpath} ] && exit 1
-cp ${ubootpath} staging_dir/target-aarch64_generic_musl/image/${model}-${soc}-u-boot-${platform}.bin
-
-
 ## files to include
 dirs=$(ls -d ${filesdir}/*/ 2>/dev/null) || true
 if [[ ${dirs} ]]; then
@@ -144,6 +149,7 @@ BIN_DIR="${outdir}"
 
 ## rename outputs
 cd ${outdir}
+rm *.json sha256sums
 for name in *${platform}-${subtarget}*; do
 	mv ${name} $(echo ${name} | sed "s/${platform}-${subtarget}-//")
 done
@@ -158,7 +164,8 @@ extlinuxdir=${rootpath}/input/kernel/extlinux
 kernelnm=$(ls *rootfs.tar.gz | sed 's/rootfs/kernel/')
 tar -czf ${kernelnm} -C kernel/ .
 rm -r kernel
-rm sha256sums
+
+
 sha256sum *.* > sha256sums
 
 
