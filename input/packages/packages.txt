@@ -1,0 +1,5 @@
+add: base-files ca-bundle dropbear fstools libc libgcc logd mtd netifd uci urandom-seed urngd partx-utils e2fsprogs mkf2fs kmod-gpio-button-hotplug procd-ujail firewall4 nftables kmod-nft-offload odhcp6c opkg ca-certificates dnsmasq-full libustream-openssl luci f2fs-tools block-mount fdisk lsblk parted wget-ssl curl nano sudo luci-i18n-base-zh-cn luci-i18n-package-manager-zh-cn luci-i18n-firewall-zh-cn kmod-nf-nathelper kmod-nf-nathelper-extra
+
+
+remove: dnsmasq odhcpd-ipv6only ppp ppp-mod-pppoe uboot-envtools kmod-pppoe kmod-pppox libustream-mbedtls uclient-fetch
+

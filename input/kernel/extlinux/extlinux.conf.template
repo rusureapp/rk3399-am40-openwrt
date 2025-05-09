@@ -1,0 +1,5 @@
+label OpenWrt
+  kernel /kernel.img
+  #fdt /FDTNAME
+  append root=/dev/mmcblk0p2 rw rootwait console=tty1 console=ttyS2,1500000
+

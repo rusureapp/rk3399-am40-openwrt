@@ -1,0 +1,20 @@
+## /etc/uci-defaults/99-custom 
+
+## dhcp to get ip automatically
+uci set network.lan.proto='dhcp'
+uci commit network
+
+## timezone
+uci set system.@system[0].timezone="CST-8"
+uci set system.@system[0].zonename="Asia/Shanghai"
+uci set system.ntp.server='time.apple.com ntp.tencent.com ntp.aliyun.com'
+uci commit system
+
+## language for luci
+uci set luci.main.lang='zh_cn'
+uci commit luci
+
+## package mirror
+sed -i 's|https\?://downloads.openwrt.org|https://mirrors.ustc.edu.cn/openwrt|g' /etc/opkg/distfeeds.conf
+
+exit 0
