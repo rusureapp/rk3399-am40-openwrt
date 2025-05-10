@@ -41,8 +41,6 @@ fi
 
 cd builder
 
-[ ! -d tmp ] && mkdir tmp
-
 
 ## device-kernel.bin
 dtbpath=$(ls ${dtbdir}/*${model}*.dtb 2>/dev/null | head -1)
@@ -56,6 +54,7 @@ if [ ! -e ${kerneldir}/${device}-kernel.bin ]; then
 	fi
 	itspath=$(ls $itsdir/*${model}*.its | head -1); [[ -z ${itspath} ]] && exit 1
 
+	[ ! -d tmp ] && mkdir tmp
 	staging_dir/host/bin/lzma e ${kerneldir}/vmlinux tmp/vmlinux.lzma -lc1 -lp2 -pb2
 
 	kernelver=$(cd ${kerneldir}; ls -d linux-*)

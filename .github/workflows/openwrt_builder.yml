@@ -1,7 +1,6 @@
 # build OpenWrt for rk3399-am40 via Image Builder
 name: RK3399-AM40 OpenWrt Builder 
 
-# Controls when the workflow will run
 on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -15,20 +14,26 @@ on:
 jobs:
   # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
 
-      # Runs a set of commands using the runners shell
       - name: build image via docker container
         run: |
-             mkdir ./output
+             cd ${{ github.workspace }}
+             mkdir output
              docker run --user root \
              -e openwrtver=${{ inputs.openwrt_version }} \
              -v ./input:/input -v ./output:/output -v ./mkimg.sh:/mkimg.sh \
              ghcr.io/openwrt/imagebuilder:rockchip-armv8-${{ inputs.openwrt_version }} \
              /bin/bash /mkimg.sh
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: openwrt-rk3399-am40
+          overwrite: true
+          retention-days: 5
+          compression-level: 0
+          path: ${{ github.workspace }}/output/*
