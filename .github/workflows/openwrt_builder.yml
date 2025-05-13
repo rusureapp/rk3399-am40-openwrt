@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: build image via docker container
         run: |
-             cd $GITHUB_WORKSPACE
+             cd ${{ github.workspace }}
              mkdir output
              docker run --user root \
              -e openwrtver=$OPENWRT_VERSION \
@@ -37,4 +37,4 @@ jobs:
           overwrite: true
           retention-days: 5
           compression-level: 0
-          path: $GITHUB_WORKSPACE/output/*
+          path: ${{ github.workspace }}/output/*
