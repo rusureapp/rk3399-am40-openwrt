@@ -15,18 +15,19 @@ jobs:
   # This workflow contains a single job called "build"
   build:
     runs-on: ubuntu-latest
+    env:
+      OPENWRT_VERSION: ${{ inputs.openwrt_version }}
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
-
       - name: build image via docker container
         run: |
-             cd ${{ github.workspace }}
+             cd $GITHUB_WORKSPACE
              mkdir output
              docker run --user root \
-             -e openwrtver=${{ inputs.openwrt_version }} \
+             -e openwrtver=$OPENWRT_VERSION \
              -v ./input:/input -v ./output:/output -v ./mkimg.sh:/mkimg.sh \
-             ghcr.io/openwrt/imagebuilder:rockchip-armv8-${{ inputs.openwrt_version }} \
+             ghcr.io/openwrt/imagebuilder:rockchip-armv8-$OPENWRT_VERSION \
              /bin/bash /mkimg.sh
 
       - name: Upload artifacts
@@ -36,4 +37,4 @@ jobs:
           overwrite: true
           retention-days: 5
           compression-level: 0
-          path: ${{ github.workspace }}/output/*
+          path: $GITHUB_WORKSPACE/output/*
