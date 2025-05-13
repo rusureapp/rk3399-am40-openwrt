@@ -1,0 +1,36 @@
+# download the latest workflow artifacts and release
+name: Release workflow artifacts
+
+# Controls when the workflow will run
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs: 
+      artifact_name:
+        description: name of the artifact to be released
+        default: openwrt-rk3399-am40
+        required: true
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  download-and-release:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      ARTIFACT_NAME: ${{ inputs.artifact_name }}
+    steps:
+      - name: Download artifacts
+        run: |
+            gh run list -L 1 -s "completed" -w "RK3399-AM40 OpenWrt Builder" -R $GITHUB_REPOSITORY
+            gh run download -n $ARTIFACT_NAME -R $GITHUB_REPOSITORY
+            ls -lh
+            version=$(ls openwrt*kernel* | awk -F- '{print $2}')
+            echo "OPENWRT_VER=$version" >> $GITHUB_ENV
+
+      - name: Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: openwrt-$OPENWRT_VER-rk3399-am40
+          allowUpdates: true
+          body: Official OpenWrt v$OPENWRT_VER for RK3399-AM40
+          artifacts: $GITHUB_WORKSPACE/*
