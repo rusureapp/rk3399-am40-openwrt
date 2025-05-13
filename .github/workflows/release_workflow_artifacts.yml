@@ -33,4 +33,4 @@ jobs:
           tag: openwrt-$OPENWRT_VER-rk3399-am40
           allowUpdates: true
           body: Official OpenWrt v$OPENWRT_VER for RK3399-AM40
-          artifacts: $GITHUB_WORKSPACE/*
+          artifacts: ./*
