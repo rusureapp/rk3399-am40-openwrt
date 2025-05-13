@@ -30,7 +30,7 @@ jobs:
       - name: Release
         uses: ncipollo/release-action@v1
         with:
-          tag: openwrt-$OPENWRT_VER-rk3399-am40
+          tag: openwrt-${{OPENWRT_VER}}-rk3399-am40
           allowUpdates: true
-          body: Official OpenWrt v$OPENWRT_VER for RK3399-AM40
+          body: Official OpenWrt v${{OPENWRT_VER}} for RK3399-AM40
           artifacts: ./*
